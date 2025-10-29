@@ -1,0 +1,212 @@
+/* Glass Search Bar Styles */
+.glass-search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+
+    /* Glassmorphism Effect */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    /* Border & Shape */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50px;
+
+    /* Glow Effect */
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(100, 200, 255, 0.1);
+
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.glass-search-container:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+        0 0 30px rgba(100, 200, 255, 0.2);
+}
+
+/* Focused State - Brighter Glow */
+.glass-search-container.focused {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(100, 200, 255, 0.5);
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(100, 200, 255, 0.4),
+        0 0 60px rgba(100, 200, 255, 0.2);
+}
+
+/* Search Icon */
+.search-icon {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 1rem;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+}
+
+.glass-search-container.focused .search-icon {
+    color: rgba(100, 200, 255, 0.9);
+}
+
+/* Input Field */
+.glass-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Clear Button */
+.clear-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Explore Button */
+
+.explore-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.explore-btn:hover {
+    color: white;
+    background: rgba(100, 200, 255, 0.1);
+}
+
+/* Chevron Icon Animation */
+.chevron {
+    transition: transform 0.3s ease;
+}
+
+.chevron.rotate {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu - Glassmorphism */
+.explore-menu {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    min-width: 200px;
+
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    /* Border & Shape */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+
+    /* Shadow & Glow */
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+        0 0 30px rgba(100, 200, 255, 0.15);
+
+    padding: 0.5rem;
+
+    /* Animation */
+    animation: slideDown 0.3s ease;
+    transform-origin: top;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Menu Items */
+.menu-item {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.menu-item:hover {
+    background: rgba(100, 200, 255, 0.2);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .glass-search-container {
+        padding: 0.6rem 1.2rem;
+    }
+
+    .glass-input {
+        font-size: 0.9rem;
+    }
+
+    .explore-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+        margin-left: 0.5rem;
+    }
+
+    .explore-menu {
+        min-width: 160px;
+    }
+
+    .menu-item {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,36 @@
+.segment {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: rgba(30, 60, 100, 0.3);
+    border-radius: 2px;
+    top: 0;
+    left: 50%;
+    transform-origin: 50% 175px;
+    transition: all 0.3s ease;
+}
+
+.segment.active {
+    background: linear-gradient(180deg,
+            rgba(100, 200, 255, 1) 0%,
+            rgba(80, 150, 255, 0.8) 50%,
+            rgba(50, 100, 200, 0.4) 100%);
+    box-shadow:
+        0 0 10px rgba(100, 200, 255, 0.6),
+        0 0 20px rgba(100, 200, 255, 0.3);
+    height: 25px;
+}
+
+/* New: Hover effect - brighten all active segments */
+.cursor-pointer:hover .segment.active {
+    box-shadow:
+        0 0 15px rgba(100, 200, 255, 0.8),
+        0 0 30px rgba(100, 200, 255, 0.5),
+        0 0 40px rgba(100, 200, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .segment {
+        transform-origin: 50% 140px;
+    }
+}
