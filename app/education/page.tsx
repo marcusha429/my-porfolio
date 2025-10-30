@@ -25,7 +25,7 @@ export default function EducationDetails() {
             period: "2020 - 2023",
             location: "San Jose, California",
             major: "Computer Science",
-            degree: "Associate Degree",
+            degree: "",
             image: "/SJCC.jpeg",
             courses: [
                 "Multivariable Calculus",
@@ -42,7 +42,7 @@ export default function EducationDetails() {
             period: "2023 - 2025",
             location: "Irvine, California",
             major: "Computer Science",
-            degree: "Bachelor of Science",
+            degree: "Bachelor of Science in Computer Science - Specialization in Artificial Intelligence",
             image: "/UCI.jpg",
             current: true,
             courses: [

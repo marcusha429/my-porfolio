@@ -87,33 +87,35 @@ export default function ProjectsDetails() {
             githubUrl: "https://github.com/yourusername/chat-app"
         },
         {
-            title: "Portfolio Analytics Dashboard",
-            category: 'webapp' as ProjectCategory,
-            date: "Jun 2023 - Aug 2023",
-            shortDescription: "A comprehensive analytics platform with interactive visualizations.",
-            fullDescription: "An advanced analytics dashboard that visualizes website traffic, user behavior patterns, conversion funnels, and performance metrics. Features real-time data processing, customizable charts, and export functionality.",
+            title: "Wedding Invitation Website",
+            category: 'uiux' as ProjectCategory,
+            date: "Apr 2025 - Jun 2025",
+            shortDescription: "Interactive bilingual wedding invitation website featuring countdown timer, photo gallery, event details, and guest messaging system with music player.",
+            fullDescription: "AA romantic, feature-rich wedding invitation website for Marcus Ha and Thanh Thuy's wedding celebration. The site opens with animated doors revealing a modern grid-based layout. It includes an interactive countdown timer, love story narrative, detailed event schedule with embedded maps, 3D photo gallery slider, guest wish form with EmailJS integration, QR codes for gifts, and background music player. The website supports both English and Vietnamese languages and is fully responsive for mobile and desktop viewing.",
             responsibilities: [
-                "Designed data visualization architecture with D3.js",
-                "Built GraphQL API for efficient data queries",
-                "Implemented real-time data streaming with WebSockets",
-                "Created responsive dashboard with customizable widgets",
-                "Optimized database queries for large datasets"
+                "Built complete single-page application by pure HTML, JavaScript, and CSS",
+                "Implemented bilingual support (English/Vietnamese) with translation strings and dynamic language switching",
+                "Developed 3D cover-flow gallery with 14 photos, countdown timer, calendar widget, and grid navigation with double-tap activation",
+                "Integrated EmailJS for guest messaging system and embedded Google Maps for 2 venue locations",
+                "Optimized and managed 27+ images (WebP format) and curated playlist of 10 background music tracks",
+                "Created mobile-first CSS architecture with 9 modular stylesheets ensuring cross-device compatibility"
             ],
-            languages: ["TypeScript", "JavaScript", "SQL"],
-            frameworks: ["Next.js", "D3.js", "GraphQL", "PostgreSQL", "Prisma"],
-            deployment: "Vercel with Supabase database",
+            languages: ["JavaScript", "CSS", "HTML5"],
+            frameworks: ["EmailJS Browser SDK v3", "Google Maps Embed API"],
+            deployment: "AWS S3 Static Website Hosting (Free Tier) - deployed as static HTML/CSS/JS website with client-side rendering",
             images: [
-                "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
+                "./ourwedding1.png",
+                "./ourwedding2.png",
             ],
-            videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            reportUrl: "/reports/analytics-dashboard-report.pdf",
-            githubUrl: "https://github.com/yourusername/analytics-dashboard"
+            videoUrl: "",
+            websiteUrl: "http://marcus-mira.s3-website-ap-southeast-2.amazonaws.com/?fbclid=IwY2xjawNvzY9leHRuA2FlbQIxMABicmlkETFMZWNoajFTTnpkYnliMkNUAR6dif0EB-XRbrr7LTp2OMmU-259uUAM4DwICXsl9LHErp1VnpDbCX8Q8scwlw_aem_Up1LRujoqIeDlJItIBTpZw",
+            reportUrl: "",
+            githubUrl: "https://github.com/marcusha429/ourwedding"
         },
         {
             title: "My Porfolio Website",
             category: 'uiux' as ProjectCategory,
-            date: "September 2025 - November 2025",
+            date: "Sep 2025 - Nov 2025",
             shortDescription: "A modern, interactive portfolio website showcasing projects and skills with creative animations and smooth user experience.",
             fullDescription: "A comprehensive personal portfolio built with Next.js and TypeScript, featuring an animated intro screen, smooth carousel navigation, expandable project cards, and responsive design. The site emphasizes user experience with glassmorphism effects, 3D transforms, and seamless page transitions. Designed to showcase technical skills while maintaining optimal performance and accessibility standards.",
             responsibilities: [
@@ -126,15 +128,15 @@ export default function ProjectsDetails() {
                 "Integrated contact form with client-side validation achieving 95% submission success rate",
                 "Deployed on Vercel with automatic CI/CD pipeline for instant updates"
             ],
-            languages: ["TypeScript", "JavaScript", "HTML", "CSS"],
+            languages: ["TypeScript", "CSS", "HTML5", "JavaScript"],
             frameworks: ["Next.js", "React", "Tailwind CSS"],
             deployment: "Deployed on Vercel with automatic deployments from GitHub",
             images: [
-                "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop"
+                "./porfolio2.png",
+                "./porfolio1.png",
             ],
             videoUrl: "",
-            reportUrl: "/reports/design-system-report.pdf",
+            reportUrl: "",
             githubUrl: "https://github.com/marcusha429/my-porfolio"
         }
     ];
@@ -337,7 +339,24 @@ export default function ProjectsDetails() {
                                         )}
 
                                         {/* Actions */}
+                                        {/* Actions */}
                                         <div className="project-actions">
+                                            {project.websiteUrl && (
+                                                <a
+                                                    href={project.websiteUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="action-btn btn-website"
+                                                >
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                        <circle cx="12" cy="12" r="10" />
+                                                        <line x1="2" y1="12" x2="22" y2="12" />
+                                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                                    </svg>
+                                                    View Website
+                                                </a>
+                                            )}
+
                                             <a
                                                 href={project.githubUrl}
                                                 target="_blank"
