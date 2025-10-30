@@ -1,0 +1,120 @@
+/* Contact Card */
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(100, 200, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(100, 200, 255, 0.1);
+}
+
+/* Icon Wrapper */
+.contact-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    background: rgba(100, 200, 255, 0.1);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 12px;
+
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover .contact-icon-wrapper {
+    background: rgba(100, 200, 255, 0.2);
+    border-color: rgba(100, 200, 255, 0.4);
+    box-shadow: 0 0 20px rgba(100, 200, 255, 0.2);
+}
+
+.contact-icon {
+    color: rgba(100, 200, 255, 0.9);
+}
+
+/* Contact Text */
+.contact-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.contact-value {
+    font-size: 1.125rem;
+    font-weight: 300;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a.contact-value:hover {
+    color: rgba(100, 200, 255, 1);
+}
+
+/* Social Connect Buttons */
+.social-connect-btn {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+
+    color: rgba(255, 255, 255, 0.8);
+
+    transition: all 0.3s ease;
+}
+
+.social-connect-btn:hover {
+    background: rgba(100, 200, 255, 0.15);
+    border-color: rgba(100, 200, 255, 0.4);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(100, 200, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-card {
+        padding: 1.5rem;
+    }
+
+    .contact-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .contact-value {
+        font-size: 1rem;
+    }
+
+    .social-connect-btn {
+        width: 56px;
+        height: 56px;
+    }
+}
