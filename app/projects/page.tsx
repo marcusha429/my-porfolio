@@ -1,145 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getProjects, type Project, type ProjectCategory } from '@/lib/database';
 import './projects-details.css';
-
-type ProjectCategory = 'webapp' | 'mobile' | 'ai' | 'uiux';
 
 export default function ProjectsDetails() {
     const [expandedProject, setExpandedProject] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState<ProjectCategory | 'all'>('all');
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const projects = [
-        {
-            title: "E-Commerce Platform",
-            category: 'webapp' as ProjectCategory,
-            date: "Apr 2024 - July 2024",
-            shortDescription: "A full-stack e-commerce platform with real-time inventory management and secure payment processing.",
-            fullDescription: "A comprehensive e-commerce solution built with modern web technologies. Features include real-time inventory tracking, secure payment gateway integration with Stripe, user authentication, shopping cart management, order history, and an intuitive admin dashboard for managing products and orders.",
-            responsibilities: [
-                "Designed and implemented the full-stack architecture",
-                "Developed RESTful APIs for product and order management",
-                "Integrated Stripe payment gateway for secure transactions",
-                "Built responsive UI with React and Tailwind CSS",
-                "Implemented user authentication and authorization"
-            ],
-            languages: ["JavaScript", "TypeScript", "HTML", "CSS"],
-            frameworks: ["React", "Node.js", "Express", "MongoDB"],
-            deployment: "Deployed on Vercel (Frontend) and Railway (Backend)",
-            images: [
-                "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop"
-            ],
-            videoUrl: "",
-            reportUrl: "/reports/ecommerce-report.pdf",
-            githubUrl: "https://github.com/yourusername/ecommerce-platform"
-        },
-        {
-            title: "AI Task Manager",
-            category: 'ai' as ProjectCategory,
-            date: "Jan 2024 - Mar 2024",
-            shortDescription: "An intelligent task management application powered by machine learning.",
-            fullDescription: "A smart task management system that uses machine learning to predict task priority, suggest optimal scheduling, and automate routine workflow decisions. The AI learns from user behavior and provides personalized recommendations.",
-            responsibilities: [
-                "Developed ML model for task priority prediction",
-                "Built FastAPI backend for ML model inference",
-                "Created React frontend with real-time updates",
-                "Implemented natural language processing for task input",
-                "Designed database schema for user preferences and task history"
-            ],
-            languages: ["Python", "JavaScript", "TypeScript"],
-            frameworks: ["TensorFlow", "FastAPI", "React", "PostgreSQL"],
-            deployment: "Docker containers on AWS EC2 with RDS database",
-            images: [
-                "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop"
-            ],
-            videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            reportUrl: "/reports/ai-task-manager-report.pdf",
-            githubUrl: "https://github.com/yourusername/ai-task-manager"
-        },
-        {
-            title: "Real-Time Chat Application",
-            category: 'mobile' as ProjectCategory,
-            date: "Sep 2023 - Dec 2023",
-            shortDescription: "A modern messaging platform with end-to-end encryption and real-time notifications.",
-            fullDescription: "A secure, real-time messaging application featuring end-to-end encryption, group chats, file sharing, typing indicators, read receipts, and push notifications. Built with WebSocket for instant message delivery.",
-            responsibilities: [
-                "Implemented WebSocket server for real-time communication",
-                "Developed end-to-end encryption using Web Crypto API",
-                "Built chat UI with message history and media support",
-                "Created notification system with service workers",
-                "Optimized performance for 1000+ concurrent users"
-            ],
-            languages: ["JavaScript", "TypeScript"],
-            frameworks: ["Socket.io", "Node.js", "React", "Redis", "MongoDB"],
-            deployment: "Deployed on Heroku with Redis Cloud",
-            images: [
-                "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&h=600&fit=crop",
-                "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&h=600&fit=crop"
-            ],
-            videoUrl: "",
-            reportUrl: "",
-            githubUrl: "https://github.com/yourusername/chat-app"
-        },
-        {
-            title: "Wedding Invitation Website",
-            category: 'uiux' as ProjectCategory,
-            date: "Apr 2025 - Jun 2025",
-            shortDescription: "Interactive bilingual wedding invitation website featuring countdown timer, photo gallery, event details, and guest messaging system with music player.",
-            fullDescription: "AA romantic, feature-rich wedding invitation website for Marcus Ha and Thanh Thuy's wedding celebration. The site opens with animated doors revealing a modern grid-based layout. It includes an interactive countdown timer, love story narrative, detailed event schedule with embedded maps, 3D photo gallery slider, guest wish form with EmailJS integration, QR codes for gifts, and background music player. The website supports both English and Vietnamese languages and is fully responsive for mobile and desktop viewing.",
-            responsibilities: [
-                "Built complete single-page application by pure HTML, JavaScript, and CSS",
-                "Implemented bilingual support (English/Vietnamese) with translation strings and dynamic language switching",
-                "Developed 3D cover-flow gallery with 14 photos, countdown timer, calendar widget, and grid navigation with double-tap activation",
-                "Integrated EmailJS for guest messaging system and embedded Google Maps for 2 venue locations",
-                "Optimized and managed 27+ images (WebP format) and curated playlist of 10 background music tracks",
-                "Created mobile-first CSS architecture with 9 modular stylesheets ensuring cross-device compatibility"
-            ],
-            languages: ["JavaScript", "CSS", "HTML5"],
-            frameworks: ["EmailJS Browser SDK v3", "Google Maps Embed API"],
-            deployment: "AWS S3 Static Website Hosting (Free Tier) - deployed as static HTML/CSS/JS website with client-side rendering",
-            images: [
-                "./ourwedding1.png",
-                "./ourwedding2.png",
-            ],
-            videoUrl: "",
-            websiteUrl: "http://marcus-mira.s3-website-ap-southeast-2.amazonaws.com/?fbclid=IwY2xjawNvzY9leHRuA2FlbQIxMABicmlkETFMZWNoajFTTnpkYnliMkNUAR6dif0EB-XRbrr7LTp2OMmU-259uUAM4DwICXsl9LHErp1VnpDbCX8Q8scwlw_aem_Up1LRujoqIeDlJItIBTpZw",
-            reportUrl: "",
-            githubUrl: "https://github.com/marcusha429/ourwedding"
-        },
-        {
-            title: "My Porfolio Website",
-            category: 'uiux' as ProjectCategory,
-            date: "Sep 2025 - Nov 2025",
-            shortDescription: "A modern, interactive portfolio website showcasing projects and skills with creative animations and smooth user experience.",
-            fullDescription: "A comprehensive personal portfolio built with Next.js and TypeScript, featuring an animated intro screen, smooth carousel navigation, expandable project cards, and responsive design. The site emphasizes user experience with glassmorphism effects, 3D transforms, and seamless page transitions. Designed to showcase technical skills while maintaining optimal performance and accessibility standards.",
-            responsibilities: [
-                "Designed and implemented full responsive layout supporting desktop and mobile devices",
-                "Developed custom 3D carousel component with smooth sliding animations achieving 60fps performance",
-                "Created 8+ reusable React components with TypeScript type safety, reducing code duplication by 40%",
-                "Implemented glassmorphism UI design system with consistent styling across 6 major sections",
-                "Built animated intro page with particle effects rendering 60 segments at 50ms intervals",
-                "Optimized images and assets reducing initial page load time to under 2 seconds",
-                "Integrated contact form with client-side validation achieving 95% submission success rate",
-                "Deployed on Vercel with automatic CI/CD pipeline for instant updates"
-            ],
-            languages: ["TypeScript", "CSS", "HTML5", "JavaScript"],
-            frameworks: ["Next.js", "React", "Tailwind CSS"],
-            deployment: "Deployed on Vercel with automatic deployments from GitHub",
-            images: [
-                "./porfolio2.png",
-                "./porfolio1.png",
-            ],
-            videoUrl: "",
-            reportUrl: "",
-            githubUrl: "https://github.com/marcusha429/my-porfolio"
+    // Fetch projects from database
+    useEffect(() => {
+        async function fetchProjects() {
+            try {
+                const data = await getProjects();
+                setProjects(data);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            } finally {
+                setLoading(false);
+            }
         }
-    ];
+        fetchProjects();
+    }, []);
 
     const categories = [
         { id: 'all' as const, label: 'All Projects', icon: '📁' },
@@ -160,6 +45,14 @@ export default function ProjectsDetails() {
     const getProjectGlobalIndex = (filteredIndex: number) => {
         return projects.indexOf(filteredProjects[filteredIndex]);
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+                <div className="text-white text-xl">Loading projects...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -209,7 +102,7 @@ export default function ProjectsDetails() {
                     {filteredProjects.map((project, filteredIndex) => {
                         const globalIndex = getProjectGlobalIndex(filteredIndex);
                         return (
-                            <div key={globalIndex} className={`project-card ${expandedProject === globalIndex ? 'expanded' : ''}`}>
+                            <div key={project.id} className={`project-card ${expandedProject === globalIndex ? 'expanded' : ''}`}>
 
                                 {/* Card Header - Always Visible */}
                                 <div className="project-card-header">
@@ -218,7 +111,7 @@ export default function ProjectsDetails() {
                                             <h2 className="project-card-title">{project.title}</h2>
                                             <span className="project-date">{project.date}</span>
                                         </div>
-                                        <p className="project-short-desc">{project.shortDescription}</p>
+                                        <p className="project-short-desc">{project.short_description}</p>
 
                                         {/* Quick Info */}
                                         <div className="project-quick-info">
@@ -263,8 +156,28 @@ export default function ProjectsDetails() {
                                         {/* Full Description */}
                                         <div className="project-section">
                                             <h3 className="section-heading">Description</h3>
-                                            <p className="section-text">{project.fullDescription}</p>
+                                            <p className="section-text">{project.full_description}</p>
                                         </div>
+
+                                        {/* Collaborators */}
+                                        {project.collaborators && project.collaborators.length > 0 && (
+                                            <div className="project-section">
+                                                <h3 className="section-heading">Team Collaboration</h3>
+                                                <div className="collaborators-container">
+                                                    <span className="collab-intro">Worked alongside:</span>
+                                                    <div className="collaborators-list">
+                                                        {project.collaborators.map((collab, i) => (
+                                                            <div key={i} className="collaborator-badge">
+                                                                <div className="collaborator-avatar">
+                                                                    {collab.split(' ').map(n => n[0]).join('')}
+                                                                </div>
+                                                                <span className="collaborator-name">{collab}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         {/* Responsibilities */}
                                         <div className="project-section">
@@ -323,12 +236,12 @@ export default function ProjectsDetails() {
                                         </div>
 
                                         {/* Demo Video */}
-                                        {project.videoUrl && (
+                                        {project.video_url && (
                                             <div className="project-section">
                                                 <h3 className="section-heading">Demo Video</h3>
                                                 <div className="video-container">
                                                     <iframe
-                                                        src={project.videoUrl}
+                                                        src={project.video_url}
                                                         title={`${project.title} Demo`}
                                                         frameBorder="0"
                                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -339,11 +252,10 @@ export default function ProjectsDetails() {
                                         )}
 
                                         {/* Actions */}
-                                        {/* Actions */}
                                         <div className="project-actions">
-                                            {project.websiteUrl && (
+                                            {project.website_url && (
                                                 <a
-                                                    href={project.websiteUrl}
+                                                    href={project.website_url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="action-btn btn-website"
@@ -358,7 +270,7 @@ export default function ProjectsDetails() {
                                             )}
 
                                             <a
-                                                href={project.githubUrl}
+                                                href={project.github_url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="action-btn btn-github"
@@ -369,9 +281,9 @@ export default function ProjectsDetails() {
                                                 View on GitHub
                                             </a>
 
-                                            {project.reportUrl && (
+                                            {project.report_url && (
                                                 <a
-                                                    href={project.reportUrl}
+                                                    href={project.report_url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="action-btn btn-report"

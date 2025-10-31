@@ -1,53 +1,92 @@
 'use client';
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getProjects, type Project } from '@/lib/database';
 import '../app/projects.css';
 
 export default function ProjectsCarousel() {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const projects = [
-        {
-            title: "E-Commerce Platform",
-            description: "A full-stack e-commerce platform with real-time inventory management, secure payment processing, and an intuitive admin dashboard. Built with modern web technologies to deliver a seamless shopping experience.",
-            image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=1200&h=800&fit=crop",
-            tags: ["React", "Node.js", "MongoDB", "Stripe API"]
-        },
-        {
-            title: "AI Task Manager",
-            description: "An intelligent task management application powered by machine learning that predicts task priority, suggests optimal scheduling, and automates routine workflow decisions.",
-            image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=800&fit=crop",
-            tags: ["Python", "TensorFlow", "FastAPI", "React"]
-        },
-        {
-            title: "Real-Time Chat Application",
-            description: "A modern messaging platform with end-to-end encryption, group chats, file sharing, and real-time notifications. Features a responsive design that works seamlessly across all devices.",
-            image: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=1200&h=800&fit=crop",
-            tags: ["WebSocket", "Node.js", "React", "Redis"]
-        },
-        {
-            title: "Portfolio Analytics Dashboard",
-            description: "A comprehensive analytics platform that visualizes website traffic, user behavior, and conversion metrics with interactive charts and real-time data processing.",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop",
-            tags: ["Next.js", "D3.js", "PostgreSQL", "GraphQL"]
+    // Fetch projects from database
+    useEffect(() => {
+        async function fetchProjects() {
+            try {
+                const data = await getProjects();
+                setProjects(data);
+                setCurrentSlide(0); // Set to 0 after data loads
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            } finally {
+                setLoading(false);
+            }
         }
-    ];
+        fetchProjects();
+    }, []);
+
+    // Early return for loading state
+    if (loading) {
+        return (
+            <div className="carousel-container">
+                <div className="text-center text-white py-20">Loading projects...</div>
+            </div>
+        );
+    }
+
+    // Create simple project cards for carousel (only show first 4)
+    const carouselProjects = projects.slice(0, 4).map(p => ({
+        title: p.title,
+        description: p.short_description,
+        image: p.images[0],
+        tags: [...p.languages.slice(0, 2), p.frameworks[0]]
+    }));
+
+    if (carouselProjects.length === 0) {
+        return (
+            <div className="carousel-container">
+                <div className="text-center text-white py-20">No projects found.</div>
+            </div>
+        );
+    }
+
+    // Safety check - make sure currentSlide is valid
+    if (!carouselProjects[currentSlide]) {
+        return (
+            <div className="carousel-container">
+                <div className="text-center text-white py-20">Loading...</div>
+            </div>
+        );
+    }
+    const getPrevIndex = () => {
+        return currentSlide === 0 ? carouselProjects.length - 1 : currentSlide - 1;
+    };
+
+    const getNextIndex = () => {
+        return currentSlide === carouselProjects.length - 1 ? 0 : currentSlide + 1;
+    };
 
     const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % projects.length);
+        if (isAnimating) return;
+        setIsAnimating(true);
+        setCurrentSlide(getNextIndex());
+        setTimeout(() => setIsAnimating(false), 800);
     };
 
     const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length);
+        if (isAnimating) return;
+        setIsAnimating(true);
+        setCurrentSlide(getPrevIndex());
+        setTimeout(() => setIsAnimating(false), 800);
     };
 
     const goToSlide = (index: number) => {
+        if (isAnimating) return;
+        setIsAnimating(true);
         setCurrentSlide(index);
+        setTimeout(() => setIsAnimating(false), 800);
     };
-
-    const getPrevIndex = () => (currentSlide - 1 + projects.length) % projects.length;
-    const getNextIndex = () => (currentSlide + 1) % projects.length;
 
     return (
         <div className="carousel-container">
@@ -58,12 +97,12 @@ export default function ProjectsCarousel() {
                 <div className="carousel-slide-3d carousel-slide-prev" onClick={prevSlide}>
                     <div className="slide-content-3d">
                         <div className="slide-text">
-                            <h2 className="slide-title">{projects[getPrevIndex()].title}</h2>
+                            <h2 className="slide-title">{carouselProjects[getPrevIndex()].title}</h2>
                         </div>
                         <div className="slide-image-container">
                             <img
-                                src={projects[getPrevIndex()].image}
-                                alt={projects[getPrevIndex()].title}
+                                src={carouselProjects[getPrevIndex()].image}
+                                alt={carouselProjects[getPrevIndex()].title}
                                 className="slide-image"
                             />
                             <div className="slide-image-overlay"></div>
@@ -76,19 +115,19 @@ export default function ProjectsCarousel() {
                     <div className="slide-content">
                         {/* Left Side - Content */}
                         <div className="slide-text">
-                            <h2 className="slide-title">{projects[currentSlide].title}</h2>
-                            <p className="slide-description">{projects[currentSlide].description}</p>
+                            <h2 className="slide-title">{carouselProjects[currentSlide].title}</h2>
+                            <p className="slide-description">{carouselProjects[currentSlide].description}</p>
 
                             {/* Tags */}
                             <div className="slide-tags">
-                                {projects[currentSlide].tags.map((tag, i) => (
+                                {carouselProjects[currentSlide].tags.map((tag, i) => (
                                     <span key={i} className="slide-tag">{tag}</span>
                                 ))}
                             </div>
 
                             {/* See Details Button */}
                             <Link href="/projects" className="slide-detail-btn">
-                                See Details
+                                See All Projects
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <polyline points="9 18 15 12 9 6" />
                                 </svg>
@@ -98,8 +137,8 @@ export default function ProjectsCarousel() {
                         {/* Right Side - Image */}
                         <div className="slide-image-container">
                             <img
-                                src={projects[currentSlide].image}
-                                alt={projects[currentSlide].title}
+                                src={carouselProjects[currentSlide].image}
+                                alt={carouselProjects[currentSlide].title}
                                 className="slide-image"
                             />
                             <div className="slide-image-overlay"></div>
@@ -111,12 +150,12 @@ export default function ProjectsCarousel() {
                 <div className="carousel-slide-3d carousel-slide-next" onClick={nextSlide}>
                     <div className="slide-content-3d">
                         <div className="slide-text">
-                            <h2 className="slide-title">{projects[getNextIndex()].title}</h2>
+                            <h2 className="slide-title">{carouselProjects[getNextIndex()].title}</h2>
                         </div>
                         <div className="slide-image-container">
                             <img
-                                src={projects[getNextIndex()].image}
-                                alt={projects[getNextIndex()].title}
+                                src={carouselProjects[getNextIndex()].image}
+                                alt={carouselProjects[getNextIndex()].title}
                                 className="slide-image"
                             />
                             <div className="slide-image-overlay"></div>
@@ -148,7 +187,7 @@ export default function ProjectsCarousel() {
 
             {/* Navigation Dots */}
             <div className="carousel-dots">
-                {projects.map((_, index) => (
+                {carouselProjects.map((_, index) => (
                     <button
                         key={index}
                         className={`carousel-dot ${currentSlide === index ? 'active' : ''}`}

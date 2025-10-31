@@ -58,7 +58,7 @@ export default function Portfolio() {
                     {/* Section Title */}
                     <div className="text-center mb-16">
                         <h2 className="text-5xl md:text-6xl font-light text-white mb-4">
-                            Education Journey
+                            Educational Journey
                         </h2>
                         <p className="text-slate-400 text-lg mb-6">
                             My academic path in computer science
@@ -76,7 +76,7 @@ export default function Portfolio() {
 
                             {/* Item 1 - Saigon University */}
                             <div className="education-timeline-item" data-side="left">
-                                <div className="education-card">
+                                <div className="education-card active">
                                     <div className="education-year">2018 - 2019</div>
                                     <h3 className="education-title">Saigon University</h3>
                                     <p className="education-major">Applied Mathematics</p>
@@ -86,7 +86,7 @@ export default function Portfolio() {
 
                             {/* Item 2 - Community Colleges */}
                             <div className="education-timeline-item" data-side="right">
-                                <div className="education-card">
+                                <div className="education-card active">
                                     <div className="education-year">2020 - 2023</div>
                                     <h3 className="education-title">San Jose City College</h3>
                                     <h3 className="education-title">Evergreen Valley College</h3>
