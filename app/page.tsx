@@ -10,5 +10,5 @@ export default function Home() {
   const clickOnCircle = () => {
     router.push('/porfolio')
   }
-  return <IntroCircle name="Welcome to Marcus's Space" onClick={clickOnCircle} />;
+  return <IntroCircle name="Let's Dive In" onClick={clickOnCircle} />;
 }

@@ -1,5 +1,4 @@
 'use client'
-import { clear } from 'console'
 import '../app/intro.css';
 import { useEffect, useRef, useState } from 'react'
 
@@ -11,52 +10,66 @@ type IntroCircleProps = {
 export default function IntroCircle({ name = 'Marcus Ha', onClick }: IntroCircleProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const [isHovered, setIsHovered] = useState(false);
+    const [isExiting, setIsExiting] = useState(false);
+    const angleRef = useRef(0);
+    const animationRef = useRef<number | undefined>(undefined);
 
     useEffect(() => {
-        // This runs after component appears on screen
         const container = containerRef.current
         if (!container) return
 
-        const totalSegments = 60
-        const segments: HTMLDivElement[] = []
+        // Animation loop for the glow
+        const animate = () => {
+            // Update angle (clockwise rotation)
+            angleRef.current = (angleRef.current + 2) % 360;
 
-        // Create 60 segments around the circle
-        for (let i = 0; i < totalSegments; i++) {
-            const segment = document.createElement('div')
-            segment.className = 'segment'
-            segment.style.transform = `rotate(${i * (360 / totalSegments)}deg)`;
-            container.appendChild(segment)
-            segments.push(segment)
-        }
+            // Update CSS custom property for the glow position
+            container.style.setProperty('--glow-angle', `${angleRef.current}deg`);
 
-        // Animate segments lighting up
-        let currentSegment = 0
-        const interval = setInterval(() => {
-            segments[currentSegment].classList.add('active')
-            const fadeOutIndex = (currentSegment - 15 + totalSegments) % totalSegments;
-            segments[fadeOutIndex].classList.remove('active');
-            currentSegment = (currentSegment + 1) % totalSegments
-        }, 50)
+            animationRef.current = requestAnimationFrame(animate);
+        };
 
-        // Clean up segments
+        animate();
+
         return () => {
-            clearInterval(interval)
-            container.innerHTML = ''
-        }
-    }, []) // [] means run once when component mounts
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
+    }, [])
+
+    const handleClick = () => {
+        setIsExiting(true);
+        // Wait for animation to complete before navigating
+        setTimeout(() => {
+            if (onClick) onClick();
+        }, 1000);
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#000a1e] to-[#001432]">
-            <div className={`relative w-[280px] h-[280px] md:w-[350px] md:h-[350px] cursor-pointer transtion-transform duration-300 easy-out ${isHovered ? 'scale-110' : 'scale-100'}`}
+        <div className={`min-h-screen max-h-screen flex items-center justify-center bg-gradient-to-br from-[#000a1e] to-[#001432] overflow-hidden ${isExiting ? 'exit-animation' : ''}`}>
+            <div
+                className={`relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] cursor-pointer transition-all duration-300 ease-out ${
+                    isExiting ? 'exiting' : isHovered ? 'scale-110' : 'scale-100'
+                }`}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                onClick={onClick}
+                onClick={handleClick}
             >
+                {/* Container for the animation */}
                 <div
                     ref={containerRef}
-                    className="absolute w-full h-full rounded-full"
-                />
-                <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-extralight text-[#c8e6ff] tracking-[5px] text-center">
+                    className="circle-container"
+                >
+                    {/* Circle border */}
+                    <div className="circle-border"></div>
+
+                    {/* Glow effect that rotates around */}
+                    <div className="circle-glow"></div>
+                </div>
+
+                {/* Name text in center */}
+                <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-extralight text-[#c8e6ff] tracking-[5px] text-center z-10">
                     {name}
                 </h1>
             </div>
