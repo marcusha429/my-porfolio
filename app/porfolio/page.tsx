@@ -41,7 +41,7 @@ export default function Portfolio() {
                             A Passionate Software Engineer
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <a href="#projects" className="px-8 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-center text-lg">
+                            <a href="./Marcus Ha_Resume.pdf" className="px-8 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-center text-lg">
                                 View Resume
                             </a>
                             <a href="#contact" className="px-8 py-4 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition text-center text-lg">
