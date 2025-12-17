@@ -35,8 +35,8 @@ export default function ProjectsCarousel() {
         );
     }
 
-    // Create simple project cards for carousel (only show first 4)
-    const carouselProjects = projects.slice(0, 4).map(p => ({
+    // Create simple project cards for carousel
+    const carouselProjects = projects.map(p => ({
         title: p.title,
         description: p.short_description,
         image: p.images[0],
